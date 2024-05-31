@@ -4,5 +4,6 @@ CREATE TABLE IF NOT EXISTS Run (
     started_on TIMESTAMP NOT NULL, -- LocalDateTime in Java maps to TIMESTAMP in SQL
     ended_on TIMESTAMP NOT NULL, -- LocalDateTime in Java maps to TIMESTAMP in SQL
     distance INTEGER CHECK (distance > 0) NOT NULL, -- Ensures distance is positive
-    location VARCHAR(255) NOT NULL -- Assuming Location is a custom type that can be stored as a string
+    location VARCHAR(255) NOT NULL, -- Assuming Location is a custom type that can be stored as a string
+    version INTEGER NOT NULL
 );

@@ -26,14 +26,16 @@ import org.springframework.web.bind.annotation.PutMapping;
 public class RunController {
 
     private final RunRepository runRepository;
+    private final JDBCClientRunRepository jdbcClientRunRepository;
 
-    public RunController(RunRepository runRepository) {
+    public RunController(RunRepository runRepository, JDBCClientRunRepository jdbcClientRunRepository) {
         this.runRepository = runRepository;
+        this.jdbcClientRunRepository = jdbcClientRunRepository;
     }
 
     @GetMapping("")
     List<Run> findAll() {
-        return runRepository.finalAll();
+        return runRepository.findAll();
     }
 
     @GetMapping("/{id}")
@@ -50,20 +52,25 @@ public class RunController {
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     public void create(@Valid @RequestBody Run run) {
-        runRepository.create(run);
+        runRepository.save(run); // this uses Spring Data Interface
     }
 
     // update
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@PathVariable Integer id, @Valid @RequestBody Run newRun) {
-        runRepository.update(id, newRun);
+        // runRepository.update(id, newRun); //this uses JDBCClientRunRepository
+
+        // throw new IllegalAccessError("Method not implemented in RestController.java &
+        // RunRepository");
+
+        jdbcClientRunRepository.update(id, newRun);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Integer id) {
-        runRepository.delete(id);
+        runRepository.deleteById(id); // this uses Spring Data Interface
     }
 
 }
